@@ -6,21 +6,16 @@
 
 using namespace std;
 
-int DP(int arr[], int n) {
-    if (n <= 2)
-        return arr[n];
-    arr[n] = DP(arr, n - 1) + DP(arr, n - 2);
-    return arr[n];
-}
-
 int main(void) {
     int n;
     scanf("%d", &n);
     int arr[n + 1];
     fill_n(arr, n + 1, 0);
-    arr[0] = 0;
+    arr[0] = 1;
     arr[1] = 1;
-    arr[2] = 2;
-    DP(arr, n);
+    if (n >= 2) {
+        for (int i = 2; i < n + 1; i++)
+            arr[i] = ((arr[i - 1]  % 10007) + (arr[i - 2]  % 10007)) % 10007;
+    }
     printf("%d", arr[n]);
 }
