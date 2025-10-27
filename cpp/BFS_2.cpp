@@ -15,7 +15,7 @@ int main(void) {
     vector<vector<int>> board(n, vector<int>(m));
     vector<vector<int>> result(n, vector<int>(m));
     for (int i = 0; i < n; i++) {
-        fill_n(result[i].begin(), m, 2147483647);
+        fill_n(result[i].begin(), m, -1);
     }
     pair<int, int> start;
     for (int i = 0; i < n; i++) {
@@ -25,24 +25,35 @@ int main(void) {
                 start.first = i;
                 start.second = j;
                 q.push(start);
+                result[i][j] = 0;
             }
             if (board[i][j] == 0)
                 result[i][j] = 0;
         }
     }
-    int distance = 0;
     while(!q.empty()) {
         auto q_front = q.front();
-        if (q_front.first > 0 && q_front.first < n && q_front.second > 0 && q_front.second < n){
-            if (board[q_front.first][q_front.second] != 0 && result[q_front.first][q_front.second] > distance)
-                result[q_front.first][q_front.second] == distance;
-        }
+        int first = q_front.first;
+        int second = q_front.second;
+        int distance = result[first][second];
         q.pop();
-        ++distance;
-        q.push(make_pair(q_front.first - 1, q_front.second));
-        q.push(make_pair(q_front.first + 1, q_front.second));
-        q.push(make_pair(q_front.first, q_front.second - 1));
-        q.push(make_pair(q_front.first, q_front.second + 1));
+        if (first > 0 && board[first - 1][second] != 0 && result[first - 1][second] == -1) {
+            result[first - 1][second] = distance + 1;
+            q.push(make_pair(first - 1, second));
+        }
+        if (first < n - 1 && board[first + 1][second] != 0 && result[first + 1][second] == -1) {
+            result[first + 1][second] = distance + 1;
+            q.push(make_pair(first + 1, second));
+        }
+        if (second > 0 && board[first][second - 1] != 0 && result[first][second - 1] == -1) {
+            result[first][second - 1] = distance + 1;
+            q.push(make_pair(first, second - 1));
+        }
+        if (second < m - 1 && board[first][second + 1] != 0 && result[first][second + 1] == -1) {
+            result[first][second + 1] = distance + 1;
+            q.push(make_pair(first, second + 1));
+        }
+
     }
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {
