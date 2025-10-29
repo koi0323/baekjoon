@@ -10,13 +10,10 @@ using namespace std;
 int main(void) {
     int n, r, c;
     cin >> n >> r >> c;
-    int i = 0;
-    int j = 0;
-    while (pow(2, i) < r)
-        ++i;
-    --i;
-    while (pow(2, j) < c)
-        ++j;
-    --j;
+    int cen_r, cen_c;
+    while (n > 1) {
+        cen_r = pow(2, n) / 2;
+        cen_c = pow(2, n) / 2;
 
+    }
 }
